@@ -5,8 +5,8 @@ import { chapters, flashcards, leaderboard, lessons, questions, tutorKnowledge }
 const AppContext = createContext(null);
 const initialState = {
   name: "Bạn",
-  xp: 320,
-  streak: 5,
+  xp: 0,
+  streak: 0,
   completed: [],
   mastered: [],
   difficult: [],
@@ -16,7 +16,7 @@ const initialState = {
   notes: [],
   dark: false,
   dailyGoal: 20,
-  minutes: 8
+  minutes: 0
 };
 
 function usePersistentState() {
