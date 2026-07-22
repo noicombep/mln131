@@ -99,7 +99,7 @@ function Layout({ children }) {
   return <div className="app-shell">
     <aside className={`sidebar ${open ? "open" : ""}`}>
       <Link className="brand" to="/" onClick={()=>setOpen(false)}>
-        <b>M</b><div><strong>MLN131 Quest</strong><small>Học triết thật cuốn</small></div>
+        <b>M</b><div><strong>MLN131 Quest</strong><small>Học CNXHKH thật cuốn</small></div>
       </Link>
       <nav>{nav.map(([to,icon,label])=><NavLink key={to} to={to} end={to==="/"} onClick={()=>setOpen(false)}>
         <span>{icon}</span>{label}
@@ -137,7 +137,7 @@ function Dashboard() {
   const avg = state.quizzes.length ? Math.round(state.quizzes.reduce((s,x)=>s+x.score,0)/state.quizzes.length) : 0;
   return <div className="stack">
     <section className="hero"><div><span>🔥 Chuỗi học {state.streak} ngày</span><h1>Chào bạn, <b>{state.name.split(" ").at(-1)}</b>!</h1>
-      <p>Tiếp tục chinh phục Triết học Mác - Lênin. Bạn còn {Math.max(0,state.dailyGoal-state.minutes)} phút để hoàn thành mục tiêu hôm nay.</p>
+      <p>Tiếp tục chinh phục môn Chủ nghĩa xã hội khoa học. Bạn còn {Math.max(0,state.dailyGoal-state.minutes)} phút để hoàn thành mục tiêu hôm nay.</p>
       <div className="actions"><Link className="btn white" to={`/lesson/${next.id}`}>▶ Tiếp tục học</Link><Link className="btn glass" to="/quiz">Luyện nhanh</Link></div>
     </div><div className="hero-art"><div>🧠</div><span>+XP</span><span>Level {level}</span></div></section>
     <section className="stats">
@@ -152,7 +152,7 @@ function Dashboard() {
       </article>
       <article className="card"><Title eyebrow="Mục tiêu hôm nay" title={`${state.minutes}/${state.dailyGoal} phút`}/><Progress value={state.minutes/state.dailyGoal*100}/>
         <div className="tasks"><p className={state.minutes>=10?"done":""}>✓ Học ít nhất 10 phút</p><p className={state.mastered.length>=5?"done":""}>✓ Ghi nhớ 5 flashcard</p><p className={state.quizzes.length?"done":""}>✓ Hoàn thành một quiz</p></div>
-        <Link className="recommend" to="/quiz?chapter=3"><span>🔄</span><div><b>Nên ôn: Phép biện chứng</b><small>Làm quiz theo chương để củng cố.</small></div>→</Link>
+        <Link className="recommend" to="/quiz?chapter=2"><span>⚙️</span><div><b>Nên ôn: Sứ mệnh giai cấp công nhân</b><small>Làm quiz theo chương để củng cố.</small></div>→</Link>
       </article>
     </section>
   </div>;
@@ -166,7 +166,7 @@ function Learn() {
   const [search,setSearch]=useState(params.get("q")||"");
   const filtered=chapters.map(ch=>({...ch,lessons:ch.lessons.filter(x=>`${x.title} ${x.summary} ${x.points.join(" ")}`.toLowerCase().includes(keyword))})).filter(ch=>ch.lessons.length);
   return <div className="stack"><PageHeader eyebrow="Hành trình tri thức" title="Khóa học MLN131" text="Học từng chương, xem ví dụ thực tế và đánh dấu hoàn thành để nhận XP." icon="📚"/>
-    <form className="learn-search" onSubmit={e=>{e.preventDefault();setParams(search?{q:search}:{})}}><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Tìm: vật chất, mâu thuẫn, thực tiễn..."/><button className="btn primary">Tìm kiếm</button></form>
+    <form className="learn-search" onSubmit={e=>{e.preventDefault();setParams(search?{q:search}:{})}}><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Tìm: giai cấp công nhân, dân chủ, dân tộc, gia đình..."/><button className="btn primary">Tìm kiếm</button></form>
     {filtered.map(ch=>{const done=ch.lessons.filter(x=>state.completed.includes(x.id)).length; return <article className="chapter" key={ch.id}>
       <header style={{"--color":ch.color}}><span>Chương {ch.id}</span><div className="chapter-icon">{ch.icon}</div><div><h2>{ch.title}</h2><p>{ch.description}</p><small>📖 {ch.lessons.length} bài · ✓ {done} hoàn thành</small></div><b>{Math.round(done/ch.lessons.length*100)}%</b></header>
       <div>{ch.lessons.map((x,i)=><Link className="lesson-row" key={x.id} to={`/lesson/${x.id}`}><span className={state.completed.includes(x.id)?"done":""}>{state.completed.includes(x.id)?"✓":i+1}</span><div><b>{x.title}</b><small>{x.summary}</small></div><em>⏱ {x.minutes} phút</em><strong>→</strong></Link>)}</div>
@@ -257,10 +257,10 @@ function SpeedGame({back}) {
 }
 
 function Tutor() {
-  const [messages,setMessages]=useState([{role:"bot",text:"Chào bạn! Mình là MLN Tutor chạy bằng dữ liệu viết cứng. Hãy hỏi về vật chất, ý thức, lượng - chất, mâu thuẫn, thực tiễn..."}]),[input,setInput]=useState("");
-  const send=text=>{const value=(text??input).trim();if(!value)return;const lower=value.toLowerCase();const found=tutorKnowledge.find(x=>x.keys.some(k=>lower.includes(k)));setMessages(p=>[...p,{role:"user",text:value},{role:"bot",text:found?.answer||"Mình chưa có câu trả lời cố định cho chủ đề này. Hãy thử hỏi: vật chất, ý thức, lượng - chất, mâu thuẫn, phủ định, thực tiễn, lực lượng sản xuất hoặc cơ sở hạ tầng."}]);setInput("")};
-  const suggestions=["Giải thích quy luật lượng - chất","So sánh lực lượng sản xuất và quan hệ sản xuất","Cơ sở hạ tầng là gì?","Cho ví dụ về mâu thuẫn"];
-  return <div className="stack"><section className="tutor-head"><div>✨</div><section><span className="eyebrow">Gia sư offline</span><h1>MLN131 Tutor</h1><p>Không gọi API, không cần internet. Câu trả lời được ánh xạ từ bộ kiến thức trong source code.</p></section></section><div className="tutor-grid"><aside><h3>Gợi ý câu hỏi</h3>{suggestions.map(x=><button key={x} onClick={()=>send(x)}>{x}</button>)}<p>🛡️ <b>100% local</b><small>Không gửi dữ liệu ra ngoài.</small></p></aside><section className="chat"><div>{messages.map((m,i)=><article key={i} className={m.role}><span>{m.role==="bot"?"M":"B"}</span><p><b>{m.role==="bot"?"MLN Tutor":"Bạn"}</b>{m.text}</p></article>)}</div><form onSubmit={e=>{e.preventDefault();send()}}><textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Ví dụ: Giải thích vật chất và ý thức dễ hiểu..."/><button className="btn primary">Gửi ➤</button></form></section></div></div>;
+  const [messages,setMessages]=useState([{role:"bot",text:"Chào bạn! Mình là MLN Tutor chạy bằng dữ liệu viết cứng. Hãy hỏi về giai cấp công nhân, thời kỳ quá độ, dân chủ, dân tộc, tôn giáo hoặc gia đình..."}]),[input,setInput]=useState("");
+  const send=text=>{const value=(text??input).trim();if(!value)return;const lower=value.toLowerCase();const found=tutorKnowledge.find(x=>x.keys.some(k=>lower.includes(k)));setMessages(p=>[...p,{role:"user",text:value},{role:"bot",text:found?.answer||"Mình chưa có câu trả lời cố định cho chủ đề này. Hãy thử hỏi: Chủ nghĩa xã hội khoa học, giai cấp công nhân, thời kỳ quá độ, dân chủ, liên minh giai cấp, dân tộc, tôn giáo hoặc gia đình."}]);setInput("")};
+  const suggestions=["Ba phát kiến vĩ đại là gì?","Sứ mệnh lịch sử của giai cấp công nhân","Bỏ qua chế độ tư bản chủ nghĩa là gì?","Cương lĩnh dân tộc gồm gì?"];
+  return <div className="stack"><section className="tutor-head"><div>✨</div><section><span className="eyebrow">Gia sư offline</span><h1>MLN131 Tutor</h1><p>Không gọi API, không cần internet. Câu trả lời được ánh xạ từ bộ kiến thức trong source code.</p></section></section><div className="tutor-grid"><aside><h3>Gợi ý câu hỏi</h3>{suggestions.map(x=><button key={x} onClick={()=>send(x)}>{x}</button>)}<p>🛡️ <b>100% local</b><small>Không gửi dữ liệu ra ngoài.</small></p></aside><section className="chat"><div>{messages.map((m,i)=><article key={i} className={m.role}><span>{m.role==="bot"?"M":"B"}</span><p><b>{m.role==="bot"?"MLN Tutor":"Bạn"}</b>{m.text}</p></article>)}</div><form onSubmit={e=>{e.preventDefault();send()}}><textarea value={input} onChange={e=>setInput(e.target.value)} placeholder="Ví dụ: Giải thích sứ mệnh lịch sử của giai cấp công nhân..."/><button className="btn primary">Gửi ➤</button></form></section></div></div>;
 }
 
 function Notes() {
@@ -272,7 +272,7 @@ function Notes() {
 }
 
 const badgeList=[
-  ["🌱","Khởi đầu triết gia","Hoàn thành bài học đầu tiên",s=>s.completed.length>=1],
+  ["🌱","Khởi đầu lý luận","Hoàn thành bài học đầu tiên",s=>s.completed.length>=1],
   ["📚","Người học chăm chỉ","Hoàn thành 5 bài học",s=>s.completed.length>=5],
   ["🎓","Nhà tư duy","Hoàn thành 10 bài học",s=>s.completed.length>=10],
   ["🎯","Bắn trúng trọng tâm","Đạt ít nhất 80% một quiz",s=>s.quizzes.some(q=>q.score>=80)],
@@ -287,6 +287,6 @@ function Leaderboard(){const {state}=useApp();const board=leaderboard.map(x=>x.n
 
 function Profile(){const {state,setState,level,courseProgress,notify}=useApp();const [name,setName]=useState(state.name),[goal,setGoal]=useState(state.dailyGoal);const save=e=>{e.preventDefault();setState(p=>({...p,name:name.trim()||"Người học",dailyGoal:Number(goal)}));notify("Đã cập nhật hồ sơ")};return <div className="stack"><section className="profile-head"><div>{initials(state.name)}</div><section><span className="eyebrow">Hồ sơ người học</span><h1>{state.name}</h1><p>Level {level} · {state.xp} XP · Hoàn thành {courseProgress}% khóa học</p></section></section><div className="profile-grid"><form className="card" onSubmit={save}><Title eyebrow="Cài đặt" title="Thông tin cá nhân"/><label>Tên hiển thị<input value={name} onChange={e=>setName(e.target.value)}/></label><label>Mục tiêu học mỗi ngày<select value={goal} onChange={e=>setGoal(e.target.value)}>{[10,20,30,45,60].map(x=><option key={x} value={x}>{x} phút</option>)}</select></label><button className="btn primary">Lưu cài đặt</button></form><article className="card"><Title eyebrow="Dữ liệu localStorage" title="Quản lý tiến độ"/><p>Toàn bộ dữ liệu được lưu trong trình duyệt hiện tại, không có máy chủ.</p><section className="data-stats"><div><b>{state.completed.length}</b><span>Bài học</span></div><div><b>{state.quizzes.length}</b><span>Bài quiz</span></div><div><b>{state.notes.length}</b><span>Ghi chú</span></div></section><button className="btn red" onClick={()=>{if(confirm("Xóa toàn bộ tiến độ?")){localStorage.removeItem("mln131-state");setState(initialState);notify("Đã đặt lại tiến độ")}}}>Xóa toàn bộ tiến độ</button></article></div></div>}
 function Empty({icon,title,text}){return <article className="empty"><div>{icon}</div><h3>{title}</h3><p>{text}</p></article>}
-function NotFound(){return <Empty icon="🧭" title="404 - Trang không tồn tại" text="Có vẻ bạn đã đi lạc khỏi bản đồ triết học."/>}
+function NotFound(){return <Empty icon="🧭" title="404 - Trang không tồn tại" text="Có vẻ bạn đã đi lạc khỏi bản đồ Chủ nghĩa xã hội khoa học."/>}
 
 export default function App(){return <AppProvider><Layout><Routes><Route path="/" element={<Dashboard/>}/><Route path="/learn" element={<Learn/>}/><Route path="/lesson/:id" element={<Lesson/>}/><Route path="/flashcards" element={<Flashcards/>}/><Route path="/quiz" element={<Quiz/>}/><Route path="/exam" element={<Exam/>}/><Route path="/games" element={<Games/>}/><Route path="/tutor" element={<Tutor/>}/><Route path="/notes" element={<Notes/>}/><Route path="/achievements" element={<Achievements/>}/><Route path="/leaderboard" element={<Leaderboard/>}/><Route path="/profile" element={<Profile/>}/><Route path="*" element={<NotFound/>}/></Routes></Layout></AppProvider>}
