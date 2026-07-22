@@ -4,7 +4,7 @@ import { chapters, flashcards, leaderboard, lessons, questions, tutorKnowledge }
 
 const AppContext = createContext(null);
 const initialState = {
-  name: "Nguyễn Toàn",
+  name: "Bạn",
   xp: 320,
   streak: 5,
   completed: [],
